@@ -1,0 +1,72 @@
+package ordnerflut;
+//Import von JDialog und JLabel für das Textfenster
+import javax.swing.*;
+
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+
+public class Ordnerflut {
+	//Die Zahl Hinter dem Ordnernamen, die sich stetig eröht
+	public static int ordnerZahl = 1;
+	
+    public static void main(String[] args) {
+        //Pfad des aktuellen Benutzers ermitteln und Desktop Pfad festlegen
+        String pfadBenutzer = System.getProperty("user.home");
+        String pfadDesktop = pfadBenutzer + File.separator + "Desktop";
+            
+        // Erstellen des Hauptfensters (JFrame)
+        JFrame frame = new JFrame();
+        	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        	frame.setSize(350, 140);
+        	frame.setLayout(null);
+ 		//Anlegen der Buttons
+ 		JButton ordnerErstButton = new JButton ("Ja bitte!");
+ 		JButton ordnerLöschButton = new JButton ("Bitte löschen!");
+ 		JButton exitButton = new JButton ("Programm schließen");
+ 			frame.setLayout(new FlowLayout()); //legt das Layout des JPanels fest
+ 			frame.setTitle("Ordner erstellen");
+ 			frame.add(new JLabel("Möchten sie ihren Desktop mit Ordnern fluten?")); //fügt den Introtext dem JPanel hinzu
+ 			frame.add(ordnerErstButton); //fügt den Button zum Erstellen der Ordner dem JPanel hinzu
+ 			frame.add(ordnerLöschButton); //fügt den Button zum Löschen der Ordner dem Dialogfeld hinzu
+ 			frame.add(exitButton); //fügt den Button zum Schließen der Anwendung dem Dialogfeld hinzu
+ 			frame.setVisible(true); //macht das Dialogfenster mit den Elementen sichtbar
+ 			
+ 			ordnerErstButton.addActionListener(new ActionListener() {
+ 	            public void actionPerformed(ActionEvent e) {
+         //Ordner Erstellen wiederholen bis Ordnerzahl = 500
+        for (int zählerOrdner=1;zählerOrdner<=500;zählerOrdner++) {
+        	  String nameOrdner = "Welle " + ordnerZahl; //ohne das zweite Plus werden die Ordner zwar in der richtigen Anzahl erstellt, aber die Zahl am Ende nicht richtig dargestellt
+              //legt den Namen und Pfad des neuen Ordners fest und erstellt ihn
+              String pfadOrdner = pfadDesktop + File.separator + nameOrdner;
+              new File(pfadOrdner).mkdir();
+              ordnerZahl = ordnerZahl + 1;	//erhöht die Zahl, mit der die Ordner beschriftet werden um 1 und wandelt die Variable zuvor nochmal in int um
+        }
+        ordnerZahl = 1; //setzt den Zählwert für die Beschriftung der Ordner, die zu Erstellen oder Löschen sind, wieder auf den Ausgangswert
+ 	      	 }
+ 	    	});
+        
+ 			ordnerLöschButton.addActionListener(new ActionListener() {
+ 	            @Override
+ 	            public void actionPerformed(ActionEvent e) {
+        //löscht die Ordner wieder, der Befehl "Delete" löscht auch nur die erstellten Ordner, die leer sind
+        for (int zählerLöschen=1;zählerLöschen<=500;zählerLöschen++) {
+            String nameOrdner = "Welle " + ordnerZahl;
+            //erstellt den Namen und Pfad der zu löschenden Ordner
+            String pfadOrdner = pfadDesktop + File.separator + nameOrdner;
+            new File(pfadOrdner).delete();
+            ordnerZahl = ordnerZahl + 1;	//erhöht die Zahl, mit der die Ordner beschriftet werden um 1
+ 
+        }
+        ordnerZahl = 1; ////setzt den Zählwert für die Beschriftung der Ordner, die zu Erstellen oder Löschen sind, wieder auf den Ausgangswert
+ 	     }
+	 	   });
+ 			exitButton.addActionListener(new ActionListener() {
+ 	            @Override
+ 	            public void actionPerformed(ActionEvent e) {
+ 	            	System.exit(0);
+ 	           }
+ 	 	   });
+    }
+} 
